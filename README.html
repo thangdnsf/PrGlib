@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 4.4.2.2 (Linux)"/>
+	<meta name="created" content="2015-07-18T08:06:37.650729558"/>
+	<meta name="changed" content="2015-07-18T09:48:57.055712882"/>
+	<style type="text/css">
+		@page { margin: 0.79in }
+		p { margin-bottom: 0.1in; line-height: 120% }
+		a:link { so-language: zxx }
+	</style>
+</head>
+<body lang="en-US" dir="ltr">
+<p align="center" style="margin-bottom: 0in; line-height: 100%"><font size="5" style="font-size: 20pt">PHƯƠNG
+PHÁP SINH KHÓA VÀ MÃ HÓA RSA</font></p>
+<p align="center" style="margin-bottom: 0in; line-height: 100%"><font size="3" style="font-size: 12pt">Thangdn
+– 18.7.2015</font></p>
+<p align="center" style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<ol type="I">
+	<li/>
+<p style="margin-bottom: 0in; line-height: 100%">PHƯƠNG PHÁP
+	SINH KHÓA</p>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+Theo định lý về số nguyên tố, thì khoảng cách trung
+bình của hai số nguyên tố lớn cỡ nbit  khoảng n*ln2.
+Vậy trong khoảng này có khản năng cao sẽ tồn tại số
+nguyên tố.</p>
+<ol type="I">
+	<ol>
+		<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Sinh số
+		ngẫu nhiên</b></p>
+	</ol>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+Ta cần tạo ra số giả ngẫu nhiên n kích thước đủ lớn
+cơ 3072bit. Vì được sử dụng trong mật mã nên số giả
+ngẫu nhiên phải đảm bảo không đoán được, không
+trùng nhau và cách xa nhau.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+Trong chương trình này sử dụng hàm RandomBits()(thư viện
+NTL) để sinh một chuỗi ngẫu nhiên n bit đảm bảo an
+toàn.</p>
+<ol type="I">
+	<ol start="2">
+		<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Tiền xử
+		lý </b>
+		</p>
+	</ol>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Ta sẽ xét trong khoảng hơn 2*n*ln2 số bằng thuật toán
+Rabin-miller, ta có thể loại nhanh hơn các hợp số với
+1000 số nguyên tố nhỏ. Qua bước xử lý này có thể
+loại bỏ 93% hợp số trong khoảng [n,n+2*n*ln2).</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Các bước thực hiện:</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+- Tạo danh sách 1000 số nguyên tố đầu tiên.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+- Với mỗi số ngẫu nhiên n, tạo một mảng bít S kích
+thước 2*n*ln2, khởi tạo bằng 0.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+- Với mỗi số nguyên tố p khởi tạo ban đầu, tính
+r=n%p. Gán tất cả các phần tử S[p*k-r]=1. Ta thấy rằng
+n+p*k-r luôn chia hết cho p. Như vậy những phần tử
+S[i]=1, ta luôn có n+i chia hết cho p.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Sau khi kết thúc ta sẽ chỉ cần kiểm tra các phần tử
+n+i với S[i]=0.</p>
+<ol type="I">
+	<ol start="3">
+		<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Kiểm
+		tra số giả nguyên tố Fermat cơ sở 2</b></p>
+	</ol>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Việc kiểm tra số giả nguyên tố fermat cơ sở 2 sẽ giúp
+loại được nhiều hợp số.</p>
+<ol type="I">
+	<ol start="4">
+		<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Kiểm
+		tra Rabin-miller</b></p>
+	</ol>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Với sai số của số giả nguyên tố là 2<sup>-</sup><sup>128</sup>,
+vậy nên ở đây ta sẽ thực hiện kiểm tra Rabin-miller
+với 128/2 cơ số khác nhau cho n, bao gồm 20 số nguyên tố
+đầu tiên và 44 số sinh ngẫy nhiên &lt;= căn bậc 2 của
+n.</p>
+<ol type="I">
+	<ol start="5">
+		<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Sinh số
+		nguyên tố mạnh</b></p>
+	</ol>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Với việc sinh số nguyên tố mạnh đảm bảo tính khó
+tấn công bằng việc phân tích nguyên tố n=p*q đối với
+p,q là số nguyên tố yếu. Số nguyên tố mạnh phải đảm
+bảo những yêu cầu sau:</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+- Số p là một số cực lớn</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+- Thừa số nguyên tố lớn nhất của p-1 là p<sup>-</sup>
+một số lớn.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+	sao cho p=a<sup>-</sup>*p<sup>-</sup> +1 là số nguyên tố nhỏ
+nhất với a<sup>-</sup> tự chọn</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+- Thừa số nguyên tố lớn nhất của p<sup>- </sup>- 1 là
+p<sup>--</sup> một số lớn.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+	sao cho p<sup>-</sup>=a<sup>--</sup>*p<sup>--</sup> + 1 là số
+nguyên tố nhỏ nhất với a<sup>--</sup> tự chọn</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Thừa số nguyên tố lớn nhất của p + 1 là p<sup>+</sup>
+là số nguyên tố</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+	sao cho p=a<sup>+</sup>*p<sup>+</sup> -1 là số nguyên tố với
+a<sup>+</sup> là tự chọn 
+</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Ta sử dụng thuật toán của Gordon's cho việc tìm số
+nguyên tố mạnh</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+1. Tìm hai số p<sup>--</sup> và p<sup>+</sup> là hai số ngẫu
+nhiên lớn cỡ n/2bit (nbit là độ dài số nguyên tố mạnh
+cần tìm). Chú ý hai số này phải khác nhau hoàn toàn.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+2. Tìm p<sup>-</sup> là số nguyên tố nhỏ nhất theo công
+thức p<sup>-</sup>=a<sup>-</sup>*p<sup>--</sup>+1</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+3. Tính po=((p<sup>+</sup>)<sup>p- -1</sup>- (p<sup>-</sup>)<sup>p+
+-1</sup>)mod (p<sup>-</sup>*p<sup>+</sup>).</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+4. Tìm p là số nguyên tố nhỏ nhất theo công thức
+p=po+a*p<sup>-</sup>*p<sup>+</sup></p>
+<ol type="I">
+	<ol start="6">
+		<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Thời
+		gian chạy</b></p>
+	</ol>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Qua quá trình cài đặt thuật toán bằng ngôn ngữ C++ trên
+hệ điều thành Ubuntu thấy tố độ như sau. 
+</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Sinh số nguyên tố độ dài 3072bit trong khoảng thời gian
+là 0-2s.</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Sinh số nguyên tố mạnh độ dài 3072bit trong khoảng thời
+gian là 1-4s</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Yêu cầu sử dụng thư viện NTL để sinh số ngẫu nhiên
+an toàn, và tính toán bằng thư viện GMP</p>
+<ol type="I">
+	<p style="margin-bottom: 0in; line-height: 100%"></p>
+</ol>
+<ol type="I" start="2">
+	<li/>
+<p style="margin-bottom: 0in; line-height: 100%">MÃ HÓA RSA 
+	</p>
+</ol>
+<ol>
+	<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Sinh khóa</b></p>
+</ol>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%; page-break-before: auto">
+Sinh hai ngẫu nhiên hai số p và q cách xa nhau là hai số
+nguyên tố mạnh cơ 3072bit</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Tính n=p*q</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Tính phi(n)=(p-1)*(q-1).</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Chọn e sao cho gcd(e, phi(n))=1</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+Tính d = e<sup>-1 </sup>mod phi(n) 
+</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; line-height: 100%">
+<b>Private key (n,d) Public key (n,e)</b></p>
+<ol start="2">
+	<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Mã hóa</b></p>
+</ol>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%; page-break-before: auto">
+1. Mã hóa một chuỗi số có độ dài thuộc
+KEY{128,192,256}</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+2. Sinh chuỗi 2048 bit trong đó 16bit đầu là bit mặc định
+KEY là số bit đặt cuối, 2032-KEY là số bit giữa sẽ
+random.</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+3. Mã hóa chuỗi số 2048bit trên bởi công thức C=M<sup>e
+</sup>mod n</p>
+<p style="margin-left: 1in; text-indent: -0.31in; margin-bottom: 0in; font-weight: normal; line-height: 100%">
+4. Lưu C dưới dạng base64 tức gom 6bit một để tránh các
+ký tự điều khiển.</p>
+<ol start="3">
+	<li/>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Giải mã</b></p>
+</ol>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+<b>	</b><span style="font-weight: normal">Quy trình giải mã làm
+ngược lại quá trình mã hóa với M=C</span><sup><span style="font-weight: normal">d
+</span></sup><span style="font-weight: normal">mode n</span></p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+<br/>
+
+</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+TÀI LIỆU THAM KHẢO:</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+[1]. <i>Are `Strong' Primes Needed for RSA?,</i>Ronald L. Rivest
+#,Robert D. Silverman y</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+November 22, 1999</p>
+<p style="margin-left: 0.49in; margin-bottom: 0in; line-height: 100%">
+[2]. <i>Strong primes are easy to find, </i><span style="font-style: normal">John
+Gordon, Cybermation L t d</span></p>
+</body>
+</html>
