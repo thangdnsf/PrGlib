@@ -21,6 +21,138 @@
     <section class="main-content">
       <p><img src="https://raw.githubusercontent.com/thang19xx/PrGlib/master/image.jpg" alt="PrGlib library"></p>
 
+<p>[ENGLISH]-[VIETNAMESE]</p>
+
+<h1>
+<a id="generate-strong-primes-for-rsa" class="anchor" href="#generate-strong-primes-for-rsa" aria-hidden="true"><span class="octicon octicon-link"></span></a>GENERATE STRONG PRIMES FOR RSA </h1>
+
+<p><em><a href="https://www.facebook.com/thangdn.sf">thangdn</a></em></p>
+
+<p><em><a href="mailto:thangdn.tlu@outlook.com">thangdn.tlu@outlook.com</a></em></p>
+
+<p><em>ThangLong University</em></p>
+
+<h2>
+<a id="i-generation-of-strong-primes" class="anchor" href="#i-generation-of-strong-primes" aria-hidden="true"><span class="octicon octicon-link"></span></a>I. GENERATION OF STRONG PRIMES</h2>
+
+<p><strong><em>According to primes number, the average distance of two large prime numbers (n bit) is  n * ln2. And We prove the existence of primes in this distance.</em></strong></p>
+
+<h3>
+<a id="1-generate-random-integers" class="anchor" href="#1-generate-random-integers" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>1. Generate random integers</strong>
+</h3>
+
+<p>We need to generate large random integer about 3072bit. Due to use in cryptography so a good random integer if it satisfies the following condition: it's a large integer. the values between numbers have to far apart.</p>
+
+<p>In this PrGlib library, it was used RandomBits (NTL library) to goal generate random integers.</p>
+
+<h3>
+<a id="2-pretreatment" class="anchor" href="#2-pretreatment" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>2. PRETREATMENT</strong>
+</h3>
+
+<p>We'll consider 2<em>n</em>ln2 numbers [n,n+2<em>n</em>ln) by Rabin-miller Algorithm. But we can improve this algorithm as follows:</p>
+
+<blockquote>
+<ul>
+<li><p>Generate a list 1000 the first prime numbers.</p></li>
+<li><p>Generate a array S with size = 2<em>n</em>ln2. default is zero</p></li>
+<li><p>Let r=n%p (p is 1000 the first primes). And compute S[p*k-r]=1</p></li>
+</ul>
+</blockquote>
+
+<p>we prove n+i always be divisible for p if S[i]=1.</p>
+
+<p>After finish, we just consider n+i if S[i]=0.</p>
+
+<p>so this improve algorithm, it eliminates more than 93% composite.</p>
+
+<h3>
+<a id="3-check-fermat-pseudoprime-to-base-2" class="anchor" href="#3-check-fermat-pseudoprime-to-base-2" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>3. CHECK FERMAT PSEUDOPRIME TO BASE 2</strong>
+</h3>
+
+<h3>
+<a id="4-rabin-miller--test" class="anchor" href="#4-rabin-miller--test" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>4. RABIN-MILLER- TEST</strong>
+</h3>
+
+<p>we'll check 64 numbers, include of 20 the first primes and 44 random numbers.</p>
+
+<h3>
+<a id="5-gordons-algorithm-for-finding-strong-primes" class="anchor" href="#5-gordons-algorithm-for-finding-strong-primes" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>5. GORDON'S ALGORITHM FOR FINDING STRONG PRIMES</strong>
+</h3>
+
+<p>Gordon's algorithm is as follows:</p>
+
+<blockquote>
+<ol>
+<li>Find p-- and p+ as large random primes.</li>
+<li>Compute p- as the least prime of the form p-=a--*p-- +1, for some integer a--.</li>
+<li>Let po=((p+)^(p- -1)- (p-)^(p+ -1))mod (p-*p+).</li>
+<li>Compute p as the least prime of the from p=po+a<em>p-</em>p+, for some integer a</li>
+</ol>
+</blockquote>
+
+<h3>
+<a id="6-runtime-of-algorithm" class="anchor" href="#6-runtime-of-algorithm" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>6. RUNTIME OF ALGORITHM</strong>
+</h3>
+
+<p>OS: ubuntu</p>
+
+<p>Language program C++</p>
+
+<p>Use library: NTL and GMP</p>
+
+<p>=&gt; Generate prime numbers: 0→ 2s.</p>
+
+<p>=&gt; Generate strong prime numbers: 1→ 3s.</p>
+
+<h2>
+<a id="ii-rsa-algorithm" class="anchor" href="#ii-rsa-algorithm" aria-hidden="true"><span class="octicon octicon-link"></span></a>II. RSA ALGORITHM</h2>
+
+<h3>
+<a id="1-generate-key" class="anchor" href="#1-generate-key" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>1. GENERATE KEY</strong>
+</h3>
+
+<blockquote>
+<p>Generate p and q as strong primes about 3072bit.</p>
+
+<p>Compute n=p<em>q and phi(n)=(p-1)</em>(q-1)</p>
+
+<p>Choose e, such as gcd(e,phi(n))=1.</p>
+
+<p>Let e*d=1 mod phi(n).</p>
+
+<p>Private key (n,d) Public key (n,e)</p>
+</blockquote>
+
+<h3>
+<a id="2-encrypt" class="anchor" href="#2-encrypt" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>2. ENCRYPT</strong>
+</h3>
+
+<p>we'll encrypt a KEY{128,192,256}. </p>
+
+<p>Generate a array bits with size = 2048. And use 16 headbit and KEY{128,192,256}, so we have to random 2032-KEY.</p>
+
+<p>Encrypt array bits:  C=M^e mod n</p>
+
+<p>we should store C format base64.</p>
+
+<h3>
+<a id="3-decrypt" class="anchor" href="#3-decrypt" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>3. DECRYPT</strong>
+</h3>
+
+<p>Decryption process do the opposite encryption with M = C ^ d mode n</p>
+
+<h1>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h1>
+
+<p>[1]. <em>Are `Strong' Primes Needed for RSA?</em>,Ronald L. Rivest #,Robert D. Silverman y
+November 22, 1999</p>
+
+<p>[2]. <em>Strong primes are easy to find</em>, John Gordon, Cybermation L t d</p>
+
+<hr>
+
+<hr>
+
 <h1>
 <a id="phƯƠng-phÁp-sinh-khÓa-vÀ-mÃ-hÓa-rsa" class="anchor" href="#ph%C6%AF%C6%A0ng-ph%C3%81p-sinh-kh%C3%93a-v%C3%80-m%C3%83-h%C3%93a-rsa" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>PHƯƠNG PHÁP SINH KHÓA VÀ MÃ HÓA RSA</strong>
 </h1>
