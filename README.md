@@ -1,8 +1,11 @@
 ﻿
 
+
 PHƯƠNG PHÁP SINH KHÓA VÀ MÃ HÓA RSA
 
 Thangdn – 18.7.2015
+thangdn.tlu@outlook.com
+ThangLong University
 
 
 I.PHƯƠNG PHÁP SINH KHÓA
